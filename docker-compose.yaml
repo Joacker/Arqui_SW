@@ -34,7 +34,7 @@ services:
     # volumes:
     #     - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     # ports:
-    #     - "3000:5432"
+    #     - "8000:5432"
     # environment:
     #     - POSTGRESQL_USER=postgres
     #     - POSTGRESQL_DATABASE=tiendita
