@@ -18,6 +18,15 @@ services:
       - "3000:5000"
     volumes:
       - ./socket:/app
+
+  scrapper:
+    container_name: scrapper
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: tail -f /dev/null
+    volumes:
+      - ./app:/app
    
 #  postgres:
 #    container_name: postgres
