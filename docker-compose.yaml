@@ -19,25 +19,26 @@ services:
     volumes:
       - ./socket:/app
 
-  scrapper:
-    container_name: scrapper
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    command: tail -f /dev/null
-    volumes:
-      - ./app:/app
+  # scrapper:
+  #   container_name: scrapper
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   command: tail -f /dev/null
+  #   volumes:
+  #     - ./app:/app
    
-#  postgres:
-#    container_name: postgres
-    # image: docker.io/bitnami/postgresql:11
-    # volumes:
-    #     - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    # ports:
-    #     - "8000:5432"
-    # environment:
-    #     - POSTGRESQL_USER=postgres
-    #     - POSTGRESQL_DATABASE=tiendita
-    #     - ALLOW_EMPTY_PASSWORD=yes
-    #     - POSTGRESQL_PASSWORD=postgres
+  mariadb:
+   container_name: mariadb
+   image: bitnami/mariadb:latest
+   volumes:
+        - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+   ports:
+        - "8000:3306"
+   environment:
+        - MARIADB_USER=mariadb
+        - POSTGRESQL_DATABASE=tiendita
+        - ALLOW_EMPTY_PASSWORD=yes
+        - MARIADB_SKIP_TEST_DB=yes
+        - MARIADB_PASSWORD=mariadb
    
