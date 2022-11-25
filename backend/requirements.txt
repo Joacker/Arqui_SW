@@ -1,0 +1,7 @@
+psycopg2
+bcrypt==3.2.2
+pycryptodome==3.10.1
+pyjwt
+uuid
+sockets
+SQLAlchemy==1.4.39
