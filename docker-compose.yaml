@@ -3,11 +3,13 @@ version: '3.5'
 services:
 
   db:
-    image: postgres:10.5
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     container_name: postgres
     restart: always
     ports:
-      - '5432:5432'
+      - '5433:5432'
     env_file:
       - db.env
     volumes:
