@@ -21,15 +21,44 @@ def load_data():
                 if cont == 0:
                     print("HEADER")
                 else:
-                    print(row)       
-                    bodega = Bodega(stock=100, nombre_producto="Coca Cola", valor_unidad=1000, costo_unidad=500)
+                    stocki = 0; nombre_productoi = ""; valor_unidadi = 0; costo_unidadi = 0
+                    for i in range(len(row)):
+                        if i == 1:
+                            stocki = row[i]
+                        if i == 2:
+                            nombre_productoi = row[i]
+                        if i == 3:
+                            valor_unidadi = row[i]
+                        if i == 4:
+                            costo_unidadi = row[i]   
+                    bodega = Bodega(stock=stocki, nombre_producto=nombre_productoi, valor_unidad=valor_unidadi, costo_unidad=costo_unidadi)
+                    print(stocki)
                     db.add(bodega)
                     db.commit()
                     print("AGREGADO EN BODEGA")
                 cont = cont + 1
-        vendedor = Vendedor(rut="12345678-9", nombre="Juan", apellido="Perez")
-        db.add(vendedor)
-        db.commit()
+        with open("./database/vendedores.csv", "r") as file2:
+            csvreader2 = csv.reader(file2, delimiter=";")
+            cont = 0
+            for row in csvreader2:
+                if cont == 0:
+                    print("HEADER")
+                else:
+                    rutv = ""; nombrev = ""; apellidov = ""
+                    for i in range(len(row)):
+                        if i == 1:
+                            rutv = row[i]
+                        if i == 2:
+                            nombrev = row[i]
+                        if i == 3:
+                            apellidov = row[i]
+                    print(rutv, nombrev, apellidov)
+                    vendedor = Vendedor(rut=rutv, nombre=nombrev, apellido=apellidov)
+                    print(rutv)
+                    db.add(vendedor)
+                    db.commit()
+                    print("AGREGADO EN VENDEDOR")
+                cont = cont + 1
         db.close()
         return True
     
