@@ -17,9 +17,16 @@ class Catalogo(Service):
             #climsg = json.loads(climsg)
             catalogo = db.query(Bodega).filter(Bodega.stock > 0).all()
             print("Lista de productos:")
+            list_products = ""
+            index = 0
             for c in catalogo:
-                print("#ID: "+str(c.id)+" Nombre: "+str(c.nombre_producto)+" Precio: "+str(c.valor_unidad)+" Stock: "+str(c.stock))
-            return "Visualizacion de catalogo de productos"
+                if (index == (len(catalogo)-1)):
+                    list_products = list_products + "#ID: "+str(c.id)+" ;; Nombre: "+str(c.nombre_producto)+" ;; Precio: "+str(c.valor_unidad)+" ;; Stock: "+str(c.stock)
+                else:
+                    list_products = list_products + "#ID: "+str(c.id)+" ;; Nombre: "+str(c.nombre_producto)+" ;; Precio: "+str(c.valor_unidad)+" ;; Stock: "+str(c.stock)+","
+                index = index + 1
+            index = 0
+            return list_products
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

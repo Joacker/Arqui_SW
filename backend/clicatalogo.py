@@ -8,7 +8,11 @@ if __name__ == "__main__":
     try:    
         a = Client("bgrup")
         msg = a.exec_client(debug=True, climsg="Hola")
-        print("###################################\n\n", msg, "\n\n###################################")
+        print("###################################")
+        parse_msg = msg.split(",")
+        for i in parse_msg:
+            print(i)
+        print("###################################")
     except KeyboardInterrupt:
         print("\nCerrando cliente, hasta pronto ....")
         keep_alive = False
