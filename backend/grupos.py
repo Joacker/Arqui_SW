@@ -1,10 +1,10 @@
 from clients.Service import Service
 from database.session import session
-from database.models import Usuario, Miembro, Grupo
+from database.models import Vendedor, Bodega
 import json, sys, os, jwt, datetime
 from time import sleep
 
-class Grupos(Service):
+class Catalogo(Service):
     def __init__(self):
         print("Servicio de grupos de usuarios")
         super().__init__("bgrup")
@@ -15,46 +15,9 @@ class Grupos(Service):
         db = session()
         try:
             climsg = json.loads(climsg)
-            token = climsg["token"]
-            decoded = jwt.decode(
-                token, os.environ['SECRET_KEY'], algorithms=['HS256'])
-            current_user = db.query(Usuario).filter_by(id=decoded['id']).first()
-            if current_user is None:
-                return "Usuario no encontrado"
-            if db.query(Grupo).filter_by(nombre=climsg["titulo"]).first() is not None:
-                return "Grupo ya existe"
-            else:
-                grupo = Grupo(
-                    nombre=climsg["titulo"],
-                    descripcion=climsg["descripcion"],
-                )
+            catalogo = db.query(Bodega).all()
                 
-               
-                db.add(grupo)
-                miembro_admin = Miembro(
-                    usuario=current_user,
-                    rol="admin",
-                    admin=True,
-                    join_date=datetime.datetime.now(),
-                    grupo=grupo
-                ) 
-                db.add(miembro_admin)
-                db.commit()
-                for email in climsg["emails"].split(","):
-                    usuario = db.query(Usuario).filter_by(email=email).first()
-                    if usuario is None:
-                        return "Usuario no encontrado"
-                    else:
-                        miembro = Miembro(
-                            usuario=usuario,
-                            rol="miembro",
-                            admin=False,
-                            join_date=datetime.datetime.now(),
-                            grupo=grupo
-                        )
-                        db.add(miembro)
-                        db.commit()
-                return "Grupo creado con id: " + str(grupo.id)
+            return "Grupo creado con id: " + catalogo
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -63,7 +26,7 @@ class Grupos(Service):
 
 def main():
     try:
-        Grupos()
+        Catalogo()
     except Exception as e:
         print(e)
         sleep(30)

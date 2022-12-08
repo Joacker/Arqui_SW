@@ -1,5 +1,5 @@
-ID;rut;nombre;apellido
-1;3466100-6;Juan;Perez
-2;8063413-7;Maria;Gomez
-3;25549693-K;Jose;Astorga
-4;16929280-9;Javiera;Hernandez
+ID;rut;password;nombre;apellido
+1;3466100-6;$2b$12$Qjh/Seorz48pSkMM.X1SLuMWX.zJh8NGjz5jx2HZPDBvo/xVea5WC;Juan;Perez
+2;8063413-7;$2b$12$AouZP5EgnUM9ja1E8W04FuWOGBStX8W7yoaQwG3iUi6zPbudXQjFS;Maria;Gomez
+3;25549693-K;$2b$12$B9wP1N1mg0.swCNl7eY.zefQ3RST/F3jcCdJcN6b1YNFSTRSCsoUK;Jose;Astorga
+4;16929280-9;$2b$12$Ty.xw1//nzCerPVc2SJcqekEdmfTeZsqv6NollK83MP2wepL/mDzS;Javiera;Hernandez

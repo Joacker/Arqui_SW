@@ -33,7 +33,6 @@ class Cotizacion(Base):
     id = Column(Integer, primary_key=True)
     vendedor_id = Column(Integer, ForeignKey('vendedor.id'), nullable=False)
     vendedor = relationship('Vendedor', back_populates='cotizacion')
-    boleta_id = Column(Integer, ForeignKey('boleta.id'), nullable=False)
     boleta = relationship('Boleta', back_populates='cotizacion')
     producto = relationship("Producto", back_populates="cotizacion")
     
@@ -44,6 +43,7 @@ class Vendedor(Base):
     __tablename__ = 'vendedor'
     id = Column(Integer, primary_key=True)
     rut = Column(String(10), nullable=False)
+    password = Column(String(90), nullable=False)
     nombre = Column(String(90), nullable=False)
     apellido = Column(String(90), nullable=False)
     cotizacion = relationship('Cotizacion', back_populates='vendedor')
@@ -63,6 +63,7 @@ class Boleta(Base):
     mediopago = Column(String(90), nullable=False)
     vendedor_id2 = Column(Integer, ForeignKey('vendedor.id'), nullable=False)
     vendedor = relationship('Vendedor', back_populates='boleta')
+    cot_id = Column(Integer, ForeignKey('cotizacion.id'), nullable=False)
     cotizacion = relationship('Cotizacion', back_populates='boleta')
     medio_pago = relationship('Medio_Pago', back_populates='boleta')
     

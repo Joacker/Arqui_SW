@@ -7,11 +7,11 @@ if __name__ == "__main__":
     keep_alive = True
     try:
         while(keep_alive):
-            email = input("Ingrese email: ")
+            rut = input("Ingrese rut: ")
             password = getpass("Ingrese contraseña: ")
             try: 
                 climsg = {
-                    "email": email,
+                    "rut": rut,
                     "password": password
                 }
                 a = Client("blogi")

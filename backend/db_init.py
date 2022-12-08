@@ -21,7 +21,7 @@ def load_data():
                 if cont == 0:
                     print("HEADER")
                 else:
-                    stocki = 0; nombre_productoi = ""; valor_unidadi = 0; costo_unidadi = 0
+                    stocki = 0; nombre_productoi = ""; valor_unidadi = 0 ;costo_unidadi = 0
                     for i in range(len(row)):
                         if i == 1:
                             stocki = row[i]
@@ -44,16 +44,18 @@ def load_data():
                 if cont == 0:
                     print("HEADER")
                 else:
-                    rutv = ""; nombrev = ""; apellidov = ""
+                    rutv = ""; nombrev = ""; apellidov = ""; passwordv = ""
                     for i in range(len(row)):
                         if i == 1:
                             rutv = row[i]
                         if i == 2:
-                            nombrev = row[i]
+                            passwordv = row[i]
                         if i == 3:
+                            nombrev = row[i]
+                        if i == 4:
                             apellidov = row[i]
                     print(rutv, nombrev, apellidov)
-                    vendedor = Vendedor(rut=rutv, nombre=nombrev, apellido=apellidov)
+                    vendedor = Vendedor(rut=rutv,password=passwordv, nombre=nombrev, apellido=apellidov)
                     print(rutv)
                     db.add(vendedor)
                     db.commit()

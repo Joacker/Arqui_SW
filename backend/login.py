@@ -1,12 +1,12 @@
 from clients.Service import Service
 from database.session import session
-from database.models import Usuario
+from database.models import Vendedor
 import bcrypt, os, json, jwt, datetime
 from time import sleep
 
 class Login(Service):
     def __init__(self):
-        print("Servicio de login de usuarios")
+        print("Servicio de login de vendedores")
         super().__init__("blogi")
         self.start_service(debug=True)
 
@@ -16,12 +16,12 @@ class Login(Service):
         
         try:
             climsg = json.loads(climsg)
-            email = climsg["email"]
+            rut = climsg["rut"]
             password = climsg["password"]
-            user = db.query(Usuario).filter(Usuario.email == email).first()
-            if bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+            vendedor = db.query(Vendedor).filter(Vendedor.rut == rut).first()
+            if bcrypt.checkpw(password.encode('utf-8'), vendedor.password.encode('utf-8')):
                 token = jwt.encode({
-                    'id': user.id,
+                    'id': vendedor.id,
                     'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
                     os.environ['SECRET_KEY'])
                 return token
