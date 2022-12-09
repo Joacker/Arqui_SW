@@ -1,7 +1,7 @@
 from clients.Service import Service
 from database.session import session
 from database.models import Vendedor, Bodega
-import json, sys, os, jwt, datetime
+import json, sys, os, datetime
 from time import sleep
 
 class Catalogo(Service):

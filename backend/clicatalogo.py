@@ -1,5 +1,4 @@
 from clients.Client import Client
-from getpass import getpass
 import json
         
 if __name__ == "__main__":
