@@ -10,7 +10,7 @@ class Catalogo(Service):
         super().__init__("bgrup")
         self.start_service(debug=True)
 
-    def service_function(self, climsg, climsg2):
+    def service_function(self, climsg):
         '''Funcion temporal, sera reemplazada en los distintos servicios'''
         db = session()
         try:
@@ -30,7 +30,7 @@ class Catalogo(Service):
                 index = 0
                 return list_products
             elif (choice == "2"):
-                ID = climsg2["id"]
+                ID = climsg["ID"]
                 catalogo = db.query(Bodega).filter(Bodega.stock > 0, Bodega.id == ID).all()
                 print("Lista de productos:")
                 list_products = ""
