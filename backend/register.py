@@ -1,12 +1,12 @@
 from clients.Service import Service
 from database.session import session
-from database.models import Usuario
+from database.models import Cotizacion, Vendedor, Boleta, Bodega, Producto
 import bcrypt, json, os, jwt, datetime
 from time import sleep
 
-class Registro(Service):
+class Add_product(Service):
     def __init__(self):
-        print("Servicio de registro de usuarios")
+        print("Servicio de Añadir Producto")
         super().__init__("bregi")
         self.start_service(debug=True)
 
@@ -15,34 +15,62 @@ class Registro(Service):
         db = session()
         try:
             climsg = json.loads(climsg)
-            user = climsg["user"]
-            password = climsg["password"]
-            email = climsg["email"]
-            phone = climsg["phone"]
-            if not db.query(Usuario).filter(Usuario.email == email).first():
-                salt = bcrypt.gensalt()
-                hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-                usuario = Usuario(username=user, password=hashed_password.decode(
-                    'utf-8'), email=email, phone=phone, fecha_ingreso=datetime.datetime.now())
-                db.add(usuario)
+            token = climsg["token"]
+            decoded = jwt.decode(
+                token, os.environ['SECRET_KEY'], algorithms=['HS256'])
+            current_user = db.query(Vendedor).filter_by(id=decoded['id']).first()
+            if current_user is None:
+                return "Usuario no encontrado"
+            valid_cotizacion = db.query(Cotizacion).join(Boleta).filter(current_user.id == Boleta.vendedor_id2).first()
+            if (valid_cotizacion is None):
+                '''No hay cotizaciones creadas'''
+                cotizacion = Cotizacion(vendedor_id = current_user.id)
+                db.add(cotizacion)
                 db.commit()
-                db.close()
-                usuario = db.query(Usuario).filter(Usuario.email == email).first()
-                token = jwt.encode({
-                    'id': usuario.id,
-                    'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
-                    os.environ['SECRET_KEY'])
-                return token
+                cantidadi = climsg["cantidad"]
+                nombre_producto1 = climsg["nombre_producto"]
+                buscar_prod = db.query(Bodega).filter(Bodega.nombre_producto==nombre_producto1, (Bodega.stock-cantidadi) >= 0).first()
+                if(buscar_prod == None):
+                    return "No hay stock suficiente, porfavor ingrese otro producto"
+                else:
+                    '''Se actualiza el stock en función de la cantidad'''
+                    buscar_prod.stock = buscar_prod.stock - cantidadi
+                    db.commit()
+                    producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = cotizacion.id, cantidad = cantidadi)
+                    db.add(producto)
+                    db.commit()
+                    boleta = Boleta(cot_id = cotizacion.id, monto = (buscar_prod.valor_unidad*cantidadi), 
+                                    vendedor_id2 = current_user.id, fecha = datetime.datetime.now())
+                    db.add(boleta)
+                    db.commit()
+                return "Cotizacion creada junto con el producto seleccionado"
+                    
             else:
-                db.close()
-                return "Usuario ya existe"
+                '''Hay cotizaciones creadas'''
+                cantidadi = climsg["cantidad"]
+                nombre_producto1 = climsg["nombre_producto"]
+                buscar_prod = db.query(Bodega).filter(Bodega.nombre_producto==nombre_producto1, (Bodega.stock-cantidadi) >= 0).first()
+                if(buscar_prod == None):
+                    return "No hay stock suficiente, porfavor ingrese otro producto"
+                else:
+                    '''Se actualiza el stock en función de la cantidad'''
+                    buscar_prod.stock = buscar_prod.stock - cantidadi
+                    db.commit()
+                    producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = valid_cotizacion.id, cantidad = cantidadi)
+                    db.add(producto)
+                    db.commit()
+                    boleta = db.query(Boleta).filter(Boleta.cot_id == valid_cotizacion.id).first()
+                    boleta.monto = boleta.monto + (buscar_prod.valor_unidad*cantidadi)
+                    db.commit()
+                return "Cotizacion ya creada"
         except Exception as e:
             db.close()
             return str(e)
-
+        
+        
 def main():
     try:
-        Registro()
+        Add_product()
     except Exception as e:
         print(e)
         sleep(30)
