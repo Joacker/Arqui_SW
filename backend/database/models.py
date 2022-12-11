@@ -21,9 +21,9 @@ class Producto(Base):
     __tablename__ = 'producto'
     cantidad = Column(Integer, nullable=False)
     bodega_id = Column(Integer, ForeignKey('bodega.id'), nullable=False, primary_key=True)
-    bodega = relationship('Bodega', back_populates='producto')
+    bodega = relationship('Bodega')
     cotizacion_id = Column(Integer, ForeignKey('cotizacion.id'), nullable=False, primary_key=True)
-    cotizacion = relationship('Cotizacion', back_populates='producto')
+    cotizacion = relationship('Cotizacion')
     
     def __repr__(self):
         return '<Producto %r>' % self.cantidad
@@ -55,12 +55,10 @@ class Vendedor(Base):
 class Boleta(Base):
     __tablename__ = 'boleta'
     id = Column(Integer, primary_key=True)
-    rut = Column(String(10), nullable=False)
-    nombre = Column(String(90), nullable=False)
-    apellido = Column(String(90), nullable=False)
-    monto = Column(Integer, nullable=False)
-    fecha = Column(DateTime, nullable=False)
-    mediopago = Column(String(90), nullable=False)
+    rut = Column(String(10), nullable=True)
+    monto = Column(Integer, nullable=True)
+    fecha = Column(DateTime, nullable=True)
+    mediopago = Column(String(90), nullable=True)
     vendedor_id2 = Column(Integer, ForeignKey('vendedor.id'), nullable=False)
     vendedor = relationship('Vendedor', back_populates='boleta')
     cot_id = Column(Integer, ForeignKey('cotizacion.id'), nullable=False)
