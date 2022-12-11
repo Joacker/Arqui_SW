@@ -56,9 +56,14 @@ class Add_product(Service):
                     '''Se actualiza el stock en función de la cantidad'''
                     buscar_prod.stock = buscar_prod.stock - cantidadi
                     db.commit()
-                    producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = valid_cotizacion.id, cantidad = cantidadi)
-                    db.add(producto)
-                    db.commit()
+                    valid_prod_cot = db.query(Producto).filter(Producto.bodega_id == buscar_prod.id, Producto.cotizacion_id == valid_cotizacion.id).first()
+                    if (valid_prod_cot is not None):
+                        valid_prod_cot.cantidad = valid_prod_cot.cantidad + cantidadi
+                        db.commit()
+                    else:
+                          producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = valid_cotizacion.id, cantidad = cantidadi)
+                          db.add(producto)
+                          db.commit()
                     boleta = db.query(Boleta).filter(Boleta.cot_id == valid_cotizacion.id).first()
                     boleta.monto = boleta.monto + (buscar_prod.valor_unidad*cantidadi)
                     db.commit()
