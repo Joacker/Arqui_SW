@@ -21,9 +21,9 @@ class Producto(Base):
     __tablename__ = 'producto'
     cantidad = Column(Integer, nullable=False)
     bodega_id = Column(Integer, ForeignKey('bodega.id'), nullable=False, primary_key=True)
-    bodega = relationship('Bodega')
+    bodega = relationship('Bodega',back_populates='producto')
     cotizacion_id = Column(Integer, ForeignKey('cotizacion.id'), nullable=False, primary_key=True)
-    cotizacion = relationship('Cotizacion')
+    cotizacion = relationship('Cotizacion', back_populates='producto')
     
     def __repr__(self):
         return '<Producto %r>' % self.cantidad
@@ -55,7 +55,7 @@ class Vendedor(Base):
 class Boleta(Base):
     __tablename__ = 'boleta'
     id = Column(Integer, primary_key=True)
-    rut = Column(String(10), nullable=True)
+    rut = Column(String(10), nullable=True, default=None)
     monto = Column(Integer, nullable=True)
     fecha = Column(DateTime, nullable=True)
     mediopago = Column(String(90), nullable=True)
@@ -70,16 +70,15 @@ class Boleta(Base):
 
 class Medio_Pago(Base):
     __tablename__ = 'medio_pago'
-    id = Column(Integer, primary_key=True)
-    efectivo = Column(Float, nullable=False)
-    debito = Column(Float, nullable=False)
-    credito = Column(Float, nullable=False)
-    transferencia = Column(Float, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    efectivo = Column(Float, default=0)
+    debito = Column(Float, default=0)
+    credito = Column(Float, default=0)
     boleta_id2 = Column(Integer, ForeignKey('boleta.id'), nullable=False, primary_key=True)
     boleta = relationship('Boleta', back_populates='medio_pago')
     
     def __repr__(self):
-        return '<Medio_Pago %r>' % self.medio_pago_id
+         return '<Medio_Pago %r>' % self.medio_pago_id
 
 def to_dict(obj):
     if isinstance(obj.__class__, DeclarativeMeta):

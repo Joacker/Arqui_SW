@@ -39,7 +39,8 @@ class Add_product(Service):
                     producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = cotizacion.id, cantidad = cantidadi)
                     db.add(producto)
                     db.commit()
-                    boleta = Boleta(cot_id = cotizacion.id, monto = (buscar_prod.valor_unidad*cantidadi), 
+                    print("Agregando boleta")
+                    boleta = Boleta( cot_id = cotizacion.id, monto = (buscar_prod.valor_unidad*cantidadi), 
                                     vendedor_id2 = current_user.id, fecha = datetime.datetime.now())
                     db.add(boleta)
                     db.commit()
