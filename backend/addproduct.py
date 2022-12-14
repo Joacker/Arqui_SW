@@ -47,28 +47,52 @@ class Add_product(Service):
                 return "Cotizacion creada junto con el producto seleccionado"
                     
             else:
-                '''Hay cotizaciones creadas'''
-                cantidadi = climsg["cantidad"]
-                nombre_producto1 = climsg["nombre_producto"]
-                buscar_prod = db.query(Bodega).filter(Bodega.nombre_producto==nombre_producto1, (Bodega.stock-cantidadi) >= 0).first()
-                if(buscar_prod == None):
-                    return "No hay stock suficiente, porfavor ingrese otro producto"
-                else:
-                    '''Se actualiza el stock en función de la cantidad'''
-                    buscar_prod.stock = buscar_prod.stock - cantidadi
+                if(valid_cotizacion.concludes == 1):
+                    '''No hay cotizaciones creadas'''
+                    cotizacion = Cotizacion(vendedor_id = current_user.id)
+                    db.add(cotizacion)
                     db.commit()
-                    valid_prod_cot = db.query(Producto).filter(Producto.bodega_id == buscar_prod.id, Producto.cotizacion_id == valid_cotizacion.id).first()
-                    if (valid_prod_cot is not None):
-                        valid_prod_cot.cantidad = valid_prod_cot.cantidad + cantidadi
-                        db.commit()
+                    cantidadi = climsg["cantidad"]
+                    nombre_producto1 = climsg["nombre_producto"]
+                    buscar_prod = db.query(Bodega).filter(Bodega.nombre_producto==nombre_producto1, (Bodega.stock-cantidadi) >= 0).first()
+                    if(buscar_prod == None):
+                        return "No hay stock suficiente, porfavor ingrese otro producto"
                     else:
-                          producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = valid_cotizacion.id, cantidad = cantidadi)
-                          db.add(producto)
-                          db.commit()
-                    boleta = db.query(Boleta).filter(Boleta.cot_id == valid_cotizacion.id).first()
-                    boleta.monto = boleta.monto + (buscar_prod.valor_unidad*cantidadi)
-                    db.commit()
-                return "Cotizacion ya creada"
+                        '''Se actualiza el stock en función de la cantidad'''
+                        buscar_prod.stock = buscar_prod.stock - cantidadi
+                        db.commit()
+                        producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = cotizacion.id, cantidad = cantidadi)
+                        db.add(producto)
+                        db.commit()
+                        print("Agregando boleta")
+                        boleta = Boleta( cot_id = cotizacion.id, monto = (buscar_prod.valor_unidad*cantidadi), 
+                                        vendedor_id2 = current_user.id, fecha = datetime.datetime.now())
+                        db.add(boleta)
+                        db.commit()
+                    return "Creando nueva cotizacion..."
+                else:
+                    '''Se busca el producto en la bodega'''
+                    cantidadi = climsg["cantidad"]
+                    nombre_producto1 = climsg["nombre_producto"]
+                    buscar_prod = db.query(Bodega).filter(Bodega.nombre_producto==nombre_producto1, (Bodega.stock-cantidadi) >= 0).first()
+                    if(buscar_prod == None):
+                        return "No hay stock suficiente, porfavor ingrese otro producto"
+                    else:
+                        '''Se actualiza el stock en función de la cantidad'''
+                        buscar_prod.stock = buscar_prod.stock - cantidadi
+                        db.commit()
+                        valid_prod_cot = db.query(Producto).filter(Producto.bodega_id == buscar_prod.id, Producto.cotizacion_id == valid_cotizacion.id).first()
+                        if (valid_prod_cot is not None):
+                            valid_prod_cot.cantidad = valid_prod_cot.cantidad + cantidadi
+                            db.commit()
+                        else:
+                            producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = valid_cotizacion.id, cantidad = cantidadi)
+                            db.add(producto)
+                            db.commit()
+                        boleta = db.query(Boleta).filter(Boleta.cot_id == valid_cotizacion.id).first()
+                        boleta.monto = boleta.monto + (buscar_prod.valor_unidad*cantidadi)
+                        db.commit()
+                    return "Producto añadido a la cotizacion"
         except Exception as e:
             db.close()
             return str(e)

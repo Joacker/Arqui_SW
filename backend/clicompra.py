@@ -15,16 +15,26 @@ if __name__ == "__main__":
             try: 
                 a = Client("buser")
                 if medio_pago == "1":
-                    medio_pago = "efectivo"
-                elif medio_pago == "2":
-                    medio_pago = "credito"
-                elif medio_pago == "3":
-                    medio_pago = "debito"
-                climsg = {
+                    medio_pagoi = "efectivo"
+                    climsg = {
                     "token": token,
                     "rut": rut,
-                    "medio_pago": medio_pago
-                }
+                    "medio_pago": medio_pagoi
+                    }
+                elif medio_pago == "2":
+                    medio_pagoi = "debito"
+                    climsg = {
+                    "token": token,
+                    "rut": rut,
+                    "medio_pago": medio_pagoi
+                    }
+                elif medio_pago == "3":
+                    medio_pagoi = "credito"
+                    climsg = {
+                    "token": token,
+                    "rut": rut,
+                    "medio_pago": medio_pagoi
+                    }
                 msg = a.exec_client(debug=True, climsg=json.dumps(climsg))
                 print("###################################\n\n", msg, "\n\n###################################")
             except Exception as e:
