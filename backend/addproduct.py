@@ -21,7 +21,7 @@ class Add_product(Service):
             current_user = db.query(Vendedor).filter_by(id=decoded['id']).first()
             if current_user is None:
                 return "Usuario no encontrado"
-            valid_cotizacion = db.query(Cotizacion).join(Boleta).filter(current_user.id == Boleta.vendedor_id2).first()
+            valid_cotizacion = db.query(Cotizacion).join(Boleta).filter(current_user.id == Boleta.vendedor_id2).order_by(Cotizacion.id.desc()).first()
             if (valid_cotizacion is None):
                 '''No hay cotizaciones creadas'''
                 cotizacion = Cotizacion(vendedor_id = current_user.id)
@@ -34,8 +34,8 @@ class Add_product(Service):
                     return "No hay stock suficiente, porfavor ingrese otro producto"
                 else:
                     '''Se actualiza el stock en función de la cantidad'''
-                    buscar_prod.stock = buscar_prod.stock - cantidadi
-                    db.commit()
+                    #buscar_prod.stock = buscar_prod.stock - cantidadi
+                    #db.commit()
                     producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = cotizacion.id, cantidad = cantidadi)
                     db.add(producto)
                     db.commit()
