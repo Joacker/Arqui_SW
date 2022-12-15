@@ -6,7 +6,7 @@ from time import sleep
 
 class Add_product(Service):
     def __init__(self):
-        print("Servicio de Eliminar Productos")
+        print("Servicio de Ranking")
         super().__init__("brrnk")
         self.start_service(debug=True)
 
