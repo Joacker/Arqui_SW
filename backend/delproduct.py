@@ -21,23 +21,49 @@ class Add_product(Service):
             current_user = db.query(Vendedor).filter_by(id=decoded['id']).first()
             if current_user is None:
                 return "Usuario no encontrado"
-            existmodi = db.query(Cotizacion).join(Boleta).filter(current_user.id == Boleta.vendedor_id2).first()
+
+            buscar=current_user.id
+            numero=int(0)
+            #existmodi = db.query(Cotizacion).filter(vendedor_id==buscar, concludes==numero).all()
+            existmodi = db.execute("SELECT * FROM cotizacion WHERE vendedor_id = "+str(buscar)+" AND concludes="+str(numero)).fetchall()
             if(existmodi is None):
                 '''No existe cotizacion'''
                 return "No existe cotizacion, por favor primero crea una en servicio de agregar producto"
             else:
-                idprod = climsg["idprod"]
-                buscar_prod = db.query(Producto).filter(Producto.vendedor_id=current_user.id, Producto.bodega_id=idprod).first()
-                if(buscar_prod is None):
+                #casos
+                cantidad = climsg["cantidad"]
+                nombre = climsg["nombre"]
+                coti=existmodi[0].id
+                exists= db.execute("SELECT * FROM producto,bodega WHERE bodega.nombre_producto='"+str(nombre)+"' AND cotizacion_id="+str(coti)+" AND producto.bodega_id=bodega.id").fetchall()
+                if (exists is None):
                     return "Producto no existente en carrito"
                 else:
-                    cantidad = climsg["cantidad"]
-                    if((buscar_prod.cantidad-cantidad)<0):
-                        return "Numero ingresado invalido, reintente"
+                    if(str(cantidad)=="total"):
+                        idprod=exists[0].bodega_id
+                        eliminar=db.execute("DELETE FROM producto WHERE bodega_id='"+str(idprod)+"' AND cotizacion_id="+str(coti))
+                        if eliminar:
+                            db.commit()
+                            return "Eliminado del carrito"
+                        else:
+                            return "F manito"
                     else:
-                        buscar_prod.cantidad=buscar_prod.cantidad-cantidad
-                        db.session.commit()
-                        return "Carrito actualizado"
+                        print("no todos")
+                        idprod=exists[0].bodega_id
+                        cantdb=exists[0].cantidad
+                        if((cantdb-cantidad)<=0):
+                            return "Numero ingresado invalido, reintente"
+                        else:
+                            cantdb=cantdb-cantidad
+                            afectada=db.execute("UPDATE producto SET cantidad="+str(cantdb)+" WHERE bodega_id='"+str(idprod)+"' AND cotizacion_id="+str(coti))
+                            if afectada:
+                                db.commit()
+                                return "Carrito actualizado"
+                            else:
+                                return "Error"
+                        return "no todos"
+                            
+                    return "fallo"
+                return "Con cotizacion"
 
             
             

@@ -9,8 +9,8 @@ if __name__ == "__main__":
     keep_alive = True
     try:
         while(keep_alive):
-            print("Ingrese el ID del producto a eliminar de la cotizacion")
-            ID = input("Ingrese opcion: ")
+            print("Ingrese el nombre del producto a eliminar de la cotizacion")
+            nombre = input("Ingrese: ")
             print("¿Desea eliminar todos las unidades?")
             print("(1) Sí")
             print("(2) No")
@@ -20,9 +20,10 @@ if __name__ == "__main__":
                     token = getpass("Token: ")
                     climsg = {
                         "token": token,
-                        "idprod": ID
+                        "nombre": nombre,
+                        "cantidad": "total"
                     }
-                    a = Client("brgdp ")
+                    a = Client("brgdp")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))                  
                     print("###################################\n\n", msg, "\n\n###################################")
                 except Exception as e:
@@ -34,7 +35,7 @@ if __name__ == "__main__":
                     cantidad = int(input("Ingrese cantidad: "))
                     climsg = {
                         "token": token,
-                        "idprod": ID,
+                        "nombre": nombre,
                         "cantidad": cantidad
                     }
                     a = Client("brgdp")
