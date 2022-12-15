@@ -6,8 +6,8 @@ from time import sleep
 
 class Add_product(Service):
     def __init__(self):
-        print("Servicio de Carrito")
-        super().__init__("brcar")
+        print("Servicio para Vaciar Carrito")
+        super().__init__("brdel")
         self.start_service(debug=True)
 
     def service_function(self, climsg):
@@ -21,22 +21,26 @@ class Add_product(Service):
             current_user = db.query(Vendedor).filter_by(id=decoded['id']).first()
             if current_user is None:
                 return "Usuario no encontrado"
-
             buscar=current_user.id
-            carrito = db.execute("SELECT producto.bodega_id,bodega.nombre_producto,producto.cantidad FROM producto,bodega,cotizacion WHERE cotizacion.concludes=0 AND cotizacion.vendedor_id="+str(buscar)+" AND producto.cotizacion_id=cotizacion.id AND bodega.id=producto.bodega_id ORDER BY producto.cantidad DESC").fetchall()
-
-            if carrito:
-                list_products = ""
-                index = 0
-                for r in carrito:
-                    if (index == (len(carrito)-1)):
-                        list_products = list_products + "#ID: "+str(r.bodega_id)+" ;; Nombre: "+str(r.nombre_producto)+" ;; Cantidad en carrito: "+str(r.cantidad)
+            search = db.execute("SELECT * FROM cotizacion WHERE concludes=0 AND vendedor_id="+str(buscar)).fetchall()
+            if search:
+                coti=search[0].id
+                lists = db.execute("SELECT * FROM producto WHERE cotizacion_id="+str(coti)).fetchall()
+                if lists:
+                    productos = db.execute("DELETE FROM producto WHERE cotizacion_id="+str(coti))
+                    if productos:
+                        db.commit()
+                        return "Productos eliminados"
                     else:
-                        list_products = list_products + "#ID: "+str(r.bodega_id)+" ;; Nombre: "+str(r.nombre_producto)+" ;; Cantidad en carrito: "+str(r.cantidad)+","
-                    index = index + 1
-                return list_products
+                        return "Error"
+                else:
+                    return "No hay productos en la cotización"
+                
             else:
-                return "No hay cotización creada y/o no hay productos en cotizacion"
+                return "No existe cotización abierta"
+
+
+
             
 
             
