@@ -47,7 +47,6 @@ class Add_product(Service):
                         else:
                             return "F manito"
                     else:
-                        print("no todos")
                         idprod=exists[0].bodega_id
                         cantdb=exists[0].cantidad
                         if((cantdb-cantidad)<=0):
