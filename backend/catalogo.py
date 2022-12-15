@@ -47,9 +47,8 @@ class Catalogo(Service):
                 return "Cerrando catalogo de productos"
                 
         except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return "Error: " + str(e) + " " + fname + " " + str(exc_tb.tb_lineno)
+            print(e)
+            return "Error: " 
 
 
 def main():

@@ -1,7 +1,7 @@
 from clients.Client import Client
 import json
         
-if _name_ == "_main_":
+if __name__ == "__main__":
     print("Service: Editar y/o Agregar producto en bodega")
     keep_alive = True
     try:

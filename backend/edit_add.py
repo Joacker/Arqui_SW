@@ -6,9 +6,9 @@ import json, sys, os, datetime
 from time import sleep
 
 class Edit_add(Service):
-    def _init_(self):
+    def __init__(self):
         print("Servicio de Editar o Agregar productos en la bodega")
-        super()._init_("aebdd")
+        super().__init__("aebdd")
         self.start_service(debug=True)
         
     def service_function(self, climsg):
@@ -16,8 +16,6 @@ class Edit_add(Service):
         try:
             climsg = json.loads(climsg)
             choice = climsg["choice"]
-            
-        
             if (choice == "1"):
                 print("editando producto de la bodega")
                 choice2 = climsg["choice2"]
@@ -33,7 +31,7 @@ class Edit_add(Service):
                     db.commit()
                     #Bodega.stock = stock_edit
                     print(stock_edit)
-                    
+                    return "PRODUCTO EDITADO CON RESPECTO AL stock"
                 elif(choice2 == "2"):
                     producto_edit2 = db.query(Bodega).filter(Bodega.id == ID ).first()
                     valor_unidad_edit = climsg["valor_unidad"]
@@ -41,6 +39,7 @@ class Edit_add(Service):
                     db.commit()
                     #Bodega.valor_unidad = valor_unidad_edit
                     print(valor_unidad_edit)
+                    return "PRODUCTO EDITADO CON RESPECTO AL valor_unidad"
                 
                 return "PRODUCTO EDITADO"
             elif (choice == "2"):
@@ -77,5 +76,5 @@ def main():
         sleep(30)
         main()
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
