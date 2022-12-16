@@ -21,7 +21,7 @@ if __name__ == "__main__":
                         "nombre_producto": nombre_producto,
                         "cantidad": cantidad
                     }
-                    a = Client("bregi")
+                    a = Client("bradd")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))                  
                     print("###################################\n\n", msg, "\n\n###################################")
                 except Exception as e:
@@ -37,7 +37,7 @@ if __name__ == "__main__":
                         "nombre_producto": nombre_producto,
                         "cantidad": cantidad
                     }
-                    a = Client("bregi")
+                    a = Client("bradd")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))                  
                     print("###################################\n\n", msg, "\n\n###################################")
                 except Exception as e:

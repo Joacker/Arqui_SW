@@ -18,7 +18,7 @@ if __name__ == "__main__":
                     climsg = {
                         "choice": choice
                     }
-                    a = Client("recau")
+                    a = Client("breca")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))
                     print("###################################")
                     

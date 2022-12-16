@@ -7,7 +7,7 @@ from time import sleep
 class Add_product(Service):
     def __init__(self):
         print("Servicio de Eliminar Productos")
-        super().__init__("brgdp")
+        super().__init__("bdelp")
         self.start_service(debug=True)
 
     def service_function(self, climsg):

@@ -16,7 +16,7 @@ if __name__ == "__main__":
                         "choice": choice,
                         "ID": 0
                     }
-                    a = Client("bgrup")
+                    a = Client("bcata")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))
                     print("###################################")
                     parse_msg = msg.split(",")

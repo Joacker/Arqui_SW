@@ -14,7 +14,7 @@ if __name__ == "__main__":
                     "rut": rut,
                     "password": password
                 }
-                a = Client("blogi")
+                a = Client("bloci")
                 msg = a.exec_client(debug=True, climsg=json.dumps(climsg))
                 print("###################################\n\n", msg, "\n\n###################################")
             except Exception as e:

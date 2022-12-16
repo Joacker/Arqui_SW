@@ -31,7 +31,7 @@ if __name__ == "__main__":
                                 "stock": stock,
                                 "ID": ID
                             }
-                            a = Client("aebdd")
+                            a = Client("bedit")
                             msg = a.exec_client(debug=True, climsg=json.dumps(climsg))
                             parse_msg = msg.split(",")
                             for i in parse_msg:

@@ -13,7 +13,7 @@ if __name__ == "__main__":
             medio_pago = input("Medio de pago: ")
             
             try: 
-                a = Client("buser")
+                a = Client("bcomp")
                 if medio_pago == "1":
                     medio_pagoi = "efectivo"
                     climsg = {

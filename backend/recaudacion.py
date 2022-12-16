@@ -7,7 +7,7 @@ from time import sleep
 class Catalogo(Service):
     def __init__(self):
         print("Informe sobre Recaudación")
-        super().__init__("recau")
+        super().__init__("breca")
         self.start_service(debug=True)
 
     def service_function(self, climsg):

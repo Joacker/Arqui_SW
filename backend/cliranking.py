@@ -17,7 +17,7 @@ if __name__ == "__main__":
                     "token": token,
                     "numero":  numero
                 }
-                a = Client("brrnk")
+                a = Client("brrgk")
                 msg = a.exec_client(debug=True, climsg=json.dumps(climsg))                  
                 print("###################################\n\n", msg, "\n\n###################################")
             except Exception as e:

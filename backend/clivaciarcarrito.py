@@ -19,7 +19,7 @@ if __name__ == "__main__":
                     climsg = {
                         "token": token
                     }
-                    a = Client("brdel")
+                    a = Client("brdll")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))                  
                     print("###################################\n\n", msg, "\n\n###################################")
                 elif (opcion=="2"):

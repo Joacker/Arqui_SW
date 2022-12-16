@@ -7,7 +7,7 @@ from time import sleep
 class Compra(Service):
     def __init__(self):
         print("Servicio para concretar compra")
-        super().__init__("buser")
+        super().__init__("bcomp")
         self.start_service(debug=True)
 
     def service_function(self, climsg):

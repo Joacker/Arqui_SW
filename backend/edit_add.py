@@ -8,7 +8,7 @@ from time import sleep
 class Edit_add(Service):
     def __init__(self):
         print("Servicio de Editar o Agregar productos en la bodega")
-        super().__init__("aebdd")
+        super().__init__("bedit")
         self.start_service(debug=True)
         
     def service_function(self, climsg):

@@ -7,7 +7,7 @@ from time import sleep
 class Login(Service):
     def __init__(self):
         print("Servicio de login de vendedores")
-        super().__init__("blogi")
+        super().__init__("bloci")
         self.start_service(debug=True)
 
     def service_function(self, climsg):
