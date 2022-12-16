@@ -33,9 +33,6 @@ class Add_product(Service):
                 if(buscar_prod == None):
                     return "No hay stock suficiente, porfavor ingrese otro producto"
                 else:
-                    '''Se actualiza el stock en función de la cantidad'''
-                    #buscar_prod.stock = buscar_prod.stock - cantidadi
-                    #db.commit()
                     producto = Producto(bodega_id = buscar_prod.id, cotizacion_id = cotizacion.id, cantidad = cantidadi)
                     db.add(producto)
                     db.commit()
@@ -79,8 +76,6 @@ class Add_product(Service):
                         return "No hay stock suficiente, porfavor ingrese otro producto"
                     else:
                         '''Se actualiza el stock en función de la cantidad'''
-                        buscar_prod.stock = buscar_prod.stock - cantidadi
-                        db.commit()
                         valid_prod_cot = db.query(Producto).filter(Producto.bodega_id == buscar_prod.id, Producto.cotizacion_id == valid_cotizacion.id).first()
                         if (valid_prod_cot is not None):
                             valid_prod_cot.cantidad = valid_prod_cot.cantidad + cantidadi

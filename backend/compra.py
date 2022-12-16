@@ -7,7 +7,7 @@ from time import sleep
 class Compra(Service):
     def __init__(self):
         print("Servicio para concretar compra")
-        super().__init__("bcomp")
+        super().__init__("buser")
         self.start_service(debug=True)
 
     def service_function(self, climsg):
@@ -50,10 +50,18 @@ class Compra(Service):
                     if (medio_pago_i == "efectivo"):
                         prodcoti= db.execute("SELECT * FROM producto where cotizacion_id="+str(cotiid)).fetchall()
                         for produni in prodcoti:
-                            restar=produni.cantidad
                             buscar=produni.bodega_id
+                            actual= db.execute("SELECT * FROM bodega where id="+str(buscar)).fetchall()
+                            restar=actual[0].stock-produni.cantidad
                             afectadas=db.execute("UPDATE bodega SET stock = "+str(restar)+"WHERE id="+str(buscar))
-                            #Agregar stock automatico con stock final <5
+                            if (int(restar)<5):
+                                suma=restar+10
+                                reqseis=db.execute("UPDATE bodega SET stock = "+str(suma)+"WHERE id="+str(buscar))
+                                if reqseis:
+                                    db.commit()
+                                    print("Stock agregado")
+                                else:
+                                    print ("Error")
                             if afectadas:
                                 print("Stock ajustado")
                                 db.commit()
