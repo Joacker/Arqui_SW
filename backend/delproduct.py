@@ -49,19 +49,21 @@ class Add_product(Service):
                     else:
                         idprod=exists[0].bodega_id
                         cantdb=exists[0].cantidad
+                        print("hay algo raro")
                         if((cantdb-cantidad)<=0):
-                            return "Numero ingresado invalido, reintente"
+                            print("Numero ingresado invalido, reintente")
                         else:
+                            print("cantidad: "+str(cantidad))
                             cantdb=cantdb-cantidad
-                            afectada=db.execute("UPDATE producto SET cantidad="+str(cantdb)+" WHERE bodega_id='"+str(idprod)+"' AND cotizacion_id="+str(coti))
+                            afectada=db.execute("UPDATE producto SET cantidad='"+str(cantdb)+"' WHERE bodega_id='"+str(idprod)+"' AND cotizacion_id="+str(coti))
                             if afectada:
                                 db.commit()
-                                return "Carrito actualizado"
+                                print("Carrito actualizado")
                             else:
-                                return "Error"
-                        return "no todos"
+                                print("Error")
+                        print("no todos")
                             
-                    return "fallo"
+                    print("fallo")
                 return "Con cotizacion"
 
             

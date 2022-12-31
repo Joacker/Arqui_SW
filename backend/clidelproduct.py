@@ -38,7 +38,7 @@ if __name__ == "__main__":
                         "nombre": nombre,
                         "cantidad": cantidad
                     }
-                    a = Client("brgdp")
+                    a = Client("bdelp")
                     msg = a.exec_client(debug=True, climsg=json.dumps(climsg))                  
                     print("###################################\n\n", msg, "\n\n###################################")
                 except Exception as e:
